@@ -1,5 +1,7 @@
-﻿public interface IWheelState
+﻿using UnityEngine;
+
+public interface IWheelState
 {
-    float TorqueRotation { get; }
-    float TurnRotation { get; }
+    float Torque { get; }
+    float Turn { get; }
 }

@@ -9,5 +9,13 @@ public class VehicleDescritor : IVehicleDescriptor
         this.transform = transform;
     }
 
-    public Vector3 UpAxis { get { return transform.up; } }
+    public Vector3 VehicleToWorldPoint(Vector3 point)
+    {
+        return transform.TransformPoint(point);
+    }
+
+    public Vector3 VehicleToWorldDirection(Vector3 direction)
+    {
+        return transform.TransformDirection(direction);
+    }
 }

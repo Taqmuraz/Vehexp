@@ -15,4 +15,6 @@ public class WheelRotatable : IRotatable
     {
         transform.localRotation = initialRotation * rotation;
     }
+
+    public Quaternion Rotation { get { return transform.rotation; } }
 }

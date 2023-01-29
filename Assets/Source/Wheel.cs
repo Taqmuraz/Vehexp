@@ -5,7 +5,8 @@ public class Wheel : IWheel, IWheelState
     IWheelDescriptor descriptor;
     IRotatable rotatable;
     float torqueRotation;
-    float turnRotation;
+    float torque;
+    float turn;
     IWheelPhysicsBody physicsBody;
 
     public Wheel(IWheelDescriptor descriptor, IWheelPhysicsBody physicsBody, IRotatable rotatable)
@@ -22,11 +23,12 @@ public class Wheel : IWheel, IWheelState
 
     public void Update(IController controller)
     {
-        turnRotation = descriptor.TurnAngle * controller.Turn;
-        torqueRotation += descriptor.Toruqe * controller.Acceleration * Time.deltaTime * 360f;
-        rotatable.Rotate(Quaternion.AngleAxis(turnRotation, descriptor.TurnAxis) * Quaternion.AngleAxis(torqueRotation, descriptor.TorqueAxis));
+        torque = descriptor.Torque * controller.Acceleration;
+        turn = descriptor.TurnAngle * controller.Turn;
+        torqueRotation += torque * Time.deltaTime * 360f;
+        rotatable.Rotate(Quaternion.AngleAxis(turn, descriptor.TurnAxis) * Quaternion.AngleAxis(torqueRotation, descriptor.TorqueAxis));
     }
 
-    public float TorqueRotation { get { return torqueRotation; } }
-    public float TurnRotation { get { return turnRotation; } }
+    public float Torque { get { return torque; } }
+    public float Turn { get { return turn; } }
 }
