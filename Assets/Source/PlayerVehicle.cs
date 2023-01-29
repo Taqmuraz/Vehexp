@@ -11,7 +11,9 @@ public class PlayerVehicle : MonoBehaviour
     void Start()
     {
         controller = new PlayerVehicleController();
-        wheels = groups.SelectMany(g => g.CreateWheels()).ToArray();
+        IRelativePhysicsBody physicsBody = new RigidbodyPhysicsBody(gameObject);
+        IVehicleDescriptor vehicleDescriptor = new VehicleDescritor(transform);
+        wheels = groups.SelectMany(g => g.CreateWheels(vehicleDescriptor, physicsBody)).ToArray();
     }
 
     void Update()

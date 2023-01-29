@@ -1,28 +1,32 @@
 ﻿using UnityEngine;
 
-public class Wheel : IWheel
+public class Wheel : IWheel, IWheelState
 {
     IWheelDescriptor descriptor;
-    Transform transform;
-    float torque;
-    float turn;
-    Quaternion initialRotation;
+    IRotatable rotatable;
+    float torqueRotation;
+    float turnRotation;
+    IWheelPhysicsBody physicsBody;
 
-    public Wheel(IWheelDescriptor descriptor, GameObject gameObject)
+    public Wheel(IWheelDescriptor descriptor, IWheelPhysicsBody physicsBody, IRotatable rotatable)
     {
         this.descriptor = descriptor;
-        transform = gameObject.transform;
-        initialRotation = transform.localRotation;
+        this.rotatable = rotatable;
+        this.physicsBody = physicsBody;
     }
 
     public void FixedUpdate()
     {
-        transform.localRotation = initialRotation * Quaternion.AngleAxis(turn, descriptor.TurnAxis) * Quaternion.AngleAxis(torque, descriptor.TorqueAxis);
+        physicsBody.UpdatePhysics(this);
     }
 
     public void Update(IController controller)
     {
-        turn = descriptor.TurnAngle * controller.Turn;
-        torque += descriptor.Toruqe * controller.Acceleration;
+        turnRotation = descriptor.TurnAngle * controller.Turn;
+        torqueRotation += descriptor.Toruqe * controller.Acceleration * Time.deltaTime * 360f;
+        rotatable.Rotate(Quaternion.AngleAxis(turnRotation, descriptor.TurnAxis) * Quaternion.AngleAxis(torqueRotation, descriptor.TorqueAxis));
     }
+
+    public float TorqueRotation { get { return torqueRotation; } }
+    public float TurnRotation { get { return turnRotation; } }
 }
