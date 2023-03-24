@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class RigidbodyPhysicsBody : IRelativePhysicsBody
+public class VehiclePhysicsBody : IRelativePhysicsBody
 {
     private class PointPhysicsBody : IPhysicsBody
     {
@@ -28,9 +28,10 @@ public class RigidbodyPhysicsBody : IRelativePhysicsBody
 
     Rigidbody rigidbody;
 
-    public RigidbodyPhysicsBody(GameObject gameObject)
+    public VehiclePhysicsBody(GameObject gameObject)
     {
         rigidbody = gameObject.AddComponent<Rigidbody>();
+        //rigidbody.centerOfMass = Vector3.zero;
     }
 
     public IPhysicsBody Point(Vector3 point)

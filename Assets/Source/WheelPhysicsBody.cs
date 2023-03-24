@@ -48,13 +48,14 @@ public class WheelPhysicsBody : IWheelPhysicsBody
         if (GroundContact(out distance))
         {
             Vector3 velocity = proxy.GetVelocity();
-            float vdot = Vector3.Dot(velocity, up) * 0.1f;
+            float vdot = Vector3.Dot(velocity, up) * descriptor.DamperClamp;
             float damperQ = Mathf.Max((descriptor.Radius * 2f - distance) / (descriptor.Radius * 2f) - vdot, 0f);
             Vector3 damper = up * damperQ * descriptor.DamperVelocity;
             proxy.AddVelocity(damper);
 
             Vector3 wheelDir = Vector3.Cross(up, Quaternion.AngleAxis(state.Turn, Vector3.up) * vehicleDescriptor.VehicleToWorldDirection(descriptor.PhysicsTorqueAxis)).normalized;
             Vector3 wheelFrictionVelocity = wheelDir * Mathf.PI * descriptor.Radius * 2f * state.Torque;
+            velocity = Vector3.ProjectOnPlane(velocity, up);
             proxy.AddVelocity((-wheelFrictionVelocity - velocity) * Time.fixedDeltaTime * 2f);
 
             Debug.DrawRay(pointable.Position, -wheelDir);

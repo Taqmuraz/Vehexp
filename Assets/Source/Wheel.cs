@@ -23,7 +23,7 @@ public class Wheel : IWheel, IWheelState
 
     public void Update(IController controller)
     {
-        torque = descriptor.Torque * controller.Acceleration;
+        torque = descriptor.Torque.Accelerate(torque, controller.Acceleration * Time.deltaTime);
         turn = descriptor.TurnAngle * controller.Turn;
         torqueRotation += torque * Time.deltaTime * 360f;
         rotatable.Rotate(Quaternion.AngleAxis(turn, descriptor.TurnAxis) * Quaternion.AngleAxis(torqueRotation, descriptor.TorqueAxis));
